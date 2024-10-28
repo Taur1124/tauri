@@ -93,10 +93,7 @@ pub fn run(options: Options) -> Result<()> {
         }));
 
       let npm_spec = match (npm_version_req, options.tag, options.rev, options.branch) {
-        (Some(version_req), _, _, _) => match manager {
-          PackageManager::Deno => format!("npm:{npm_name}@{version_req}"),
-          _ => format!("{npm_name}@{version_req}"),
-        },
+        (Some(version_req), _, _, _) => format!("{npm_name}@{version_req}"),
         (None, Some(tag), None, None) => {
           format!("tauri-apps/tauri-plugin-{plugin}#{tag}")
         }

@@ -89,10 +89,15 @@ impl PackageManager {
         .join(", ")
     );
 
-    let status = self
-      .cross_command()
-      .arg("add")
-      .args(dependencies)
+    let mut command = self.cross_command();
+    command.arg("add");
+
+    match self {
+      PackageManager::Deno => command.args(dependencies.iter().map(|d| format!("npm:{d}"))),
+      _ => command.args(dependencies),
+    };
+
+    let status = command
       .current_dir(frontend_dir)
       .status()
       .with_context(|| format!("failed to run {self}"))?;
